@@ -25,7 +25,7 @@ def borrar_pessoas(frame, caixas):
 class Contador:
     """Roda em thread: le o video, conta a cada `intervalo` s e expoe a mediana das ultimas 5 contagens."""
 
-    def __init__(self, fonte, intervalo=2.0, modelo="yolo11n.pt", snapshot=None):
+    def __init__(self, fonte, intervalo=2.0, modelo="yolo11n.pt", snapshot=None, ao_vivo=False):
         import cv2
         from ultralytics import YOLO
         self.cv2, self.model = cv2, YOLO(modelo)
@@ -33,7 +33,7 @@ class Contador:
         assert self.cap.isOpened(), f"nao abriu o video: {fonte}"
         self.arquivo = os.path.exists(fonte)  # arquivo local: tocar em tempo real, nao o mais rapido possivel
         self.fps = self.cap.get(cv2.CAP_PROP_FPS) or 25
-        self.intervalo, self.snapshot = intervalo, snapshot
+        self.intervalo, self.snapshot, self.ao_vivo, self.jpg = intervalo, snapshot, ao_vivo, None
         self.hc, self.hp = deque(maxlen=5), deque(maxlen=5)
         self.ms_inferencia = None
         self.ativo = True
@@ -42,7 +42,7 @@ class Contador:
         threading.Thread(target=self._contar, daemon=True).start()
 
     def _ler(self):
-        while True:
+        while self.ativo:  # parar(): ativo=False encerra leitura e contagem
             ok, f = self.cap.read()
             if not ok:
                 break
@@ -64,9 +64,13 @@ class Contador:
             ids = [int(c) for c in r.boxes.cls]
             self.hc.append(sum(c in VEICULOS for c in ids))
             self.hp.append(ids.count(PESSOA))
-            if self.snapshot:
+            if self.snapshot or self.ao_vivo:
                 pessoas = [tuple(map(int, b)) for b, c in zip(r.boxes.xyxy.tolist(), ids) if c == PESSOA]
-                self.cv2.imwrite(self.snapshot, borrar_pessoas(r.plot(), pessoas))
+                img = borrar_pessoas(r.plot(), pessoas)
+                if self.snapshot:
+                    self.cv2.imwrite(self.snapshot, img)
+                if self.ao_vivo:
+                    self.jpg = self.cv2.imencode(".jpg", img)[1].tobytes()  # so em memoria, pra UI
             time.sleep(max(0, self.intervalo - (time.perf_counter() - t0)))
 
     def contagem(self):

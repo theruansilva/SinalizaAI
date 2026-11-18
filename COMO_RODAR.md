@@ -50,6 +50,12 @@ curl localhost:8081/leituras                                         # leituras 
 ```
 `Ctrl+C` no gateway → em 10 s o UNO volta sozinho ao ciclo fixo.
 
+## Web UI da câmera (opcional, para a demo)
+```bash
+python ui.py          # dentro de gateway/ -> http://localhost:8000
+```
+Cole o link (YouTube, HLS ou `amostras/cruzamento.mp4`) e clique em **Iniciar**: aparece o vídeo com as detecções (pessoas borradas), a contagem e os tempos de verde/travessia. Nada é gravado em disco.
+
 ## 5. Testes automáticos
 ```bash
 python -m unittest -v      # dentro de gateway/; esperado: 7 testes OK

@@ -115,6 +115,8 @@ No Wokwi, clique no HC-SR04 e diminua a distância para menos de 170 cm (água a
 
 O modelo `yolo11n.pt` é baixado automaticamente pelo `ultralytics` na primeira execução.
 
+Para mostrar a visão ao vivo: `python ui.py` em `gateway/` e abrir http://localhost:8000 (vídeo com pessoas borradas, contagem e tempos).
+
 ## Testes e evidências
 
 `cd gateway && python -m unittest -v` roda 7 testes:
