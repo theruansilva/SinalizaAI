@@ -88,6 +88,22 @@ POST /alertas                    <- {"modo":"EVACUACAO"}   (simulação pelo ope
 - **Sem câmera:** tempos fixos de 20 s e 10 s.
 - **Comando inválido na serial:** é descartado. O UNO limita o verde a 5–90 s e a travessia a 0–40 s.
 
+## Modelos e tecnologias
+
+| Camada | Tecnologia | Uso |
+|---|---|---|
+| Hardware | Arduino UNO, HC-SR04, LEDs, buzzer | Semáforo e leitura do nível da água |
+| Firmware | C++ (Arduino), `arduino-cli` | `sketch/sketch.ino` |
+| Simulação | Wokwi (VS Code) | Circuito em `diagram.json`, serial exposta via RFC 2217 |
+| Gateway | Python 3.10+, `pyserial` | Ponte serial ↔ HTTP e regra de decisão (`gateway.py`) |
+| Visão computacional | YOLO11n (`ultralytics`), OpenCV | Contagem de carros e pedestres e borrão das pessoas (`visao.py`) |
+| Vídeo | `yt-dlp` | Abre links de YouTube/HLS como câmera |
+| Web UI | `http.server` (stdlib) | Visualização ao vivo (`ui.py`) |
+| Nuvem | API Java (Spring Boot) na VM Azure + Oracle | Modos e leituras; `api_fake.py` a substitui nos testes |
+| Testes | `unittest` | `test_gateway.py` |
+
+**Por que YOLO11n:** é o menor modelo da família (5,4 MB) e roda em CPU a ~115 ms por frame, o que basta para contar a cada 2 s sem GPU no poste.
+
 ## Como executar
 
 Pré-requisitos: VS Code com a extensão **Wokwi Simulator**, Arduino CLI (ou Arduino IDE) e Python 3.10+.
@@ -105,7 +121,7 @@ python -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
 python api_fake.py 8080 &        # ou aponte --api para a API Java na Azure
 python gateway.py --serial rfc2217://localhost:4000 --api http://localhost:8080 \
-                  --video amostras/cruzamento.mp4   # ou URL de câmera/YouTube ao vivo
+                  --video amostras/person-bicycle-car-detection.mp4   # ou URL de câmera/YouTube ao vivo
 
 # simular alerta da Defesa Civil
 curl -X POST localhost:8080/alertas -d '{"modo":"EVACUACAO"}'
@@ -113,13 +129,13 @@ curl -X POST localhost:8080/alertas -d '{"modo":"EVACUACAO"}'
 
 No Wokwi, clique no HC-SR04 e diminua a distância para menos de 170 cm (água acima de 30 cm): o semáforo passa a piscar em amarelo e o buzzer toca.
 
-O modelo `yolo11n.pt` é baixado automaticamente pelo `ultralytics` na primeira execução.
+O modelo `yolo11n.pt` (5,4 MB) já vem no repositório em `gateway/`, então roda sem internet.
 
 Para mostrar a visão ao vivo: `python ui.py` em `gateway/` e abrir http://localhost:8000 (vídeo com pessoas borradas, contagem e tempos).
 
 ## Testes e evidências
 
-**Vídeo da demonstração:** [`evidencias/video-mostrando-funcionando.mp4`](evidencias/video-mostrando-funcionando.mp4) (web UI com contagem e pessoas borradas).
+**Vídeo da demonstração:** [`evidencias/video-mostrando-funcionando.mp4`](evidencias/video-mostrando-funcionando.mp4) mostra o circuito no Wokwi e a web UI com a contagem, as pessoas borradas e os tempos calculados. O circuito também está em [`diagram.json`](diagram.json) (abre no Wokwi).
 
 `cd gateway && python -m unittest -v` roda 7 testes:
 
@@ -133,7 +149,7 @@ Para mostrar a visão ao vivo: `python ui.py` em `gateway/` e abrir http://local
 | Linhas seriais inválidas (`""`, `L,`, `L,abc`, `X,1`, `L,1,2`) | ignoradas | ok |
 | Ponta a ponta: UNO falso em pty + API fake, alerta EVACUACAO + água 50 cm | UNO recebe `M,0,20,10` e depois `M,2,…`; leitura chega na API | ok |
 
-**Execução com vídeo** (`evidencias/log_gateway.jsonl`, 30 s; vídeo público `person-bicycle-car-detection.mp4` dos sample-videos da Intel). O UNO foi simulado em pty, com a água subindo de 10 para 45 cm aos 18 s, e o alerta EVACUACAO foi disparado aos 24 s:
+**Execução com vídeo** (`evidencias/log_gateway.jsonl`, 30 s; vídeo público `gateway/amostras/person-bicycle-car-detection.mp4`, dos [sample-videos da Intel](https://github.com/intel-iot-devkit/sample-videos)). O UNO foi simulado em pty, com a água subindo de 10 para 45 cm aos 18 s, e o alerta EVACUACAO foi disparado aos 24 s:
 
 | Fase | Comando enviado ao UNO |
 |---|---|

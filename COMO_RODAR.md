@@ -37,7 +37,7 @@ python api_fake.py 8081
 ```
 **Terminal 2 – gateway** (com o simulador rodando)
 ```bash
-python gateway.py --serial rfc2217://localhost:4000 --api http://localhost:8081 --video amostras/cruzamento.mp4 --snapshot ../evidencias/snapshot_borrado.jpg
+python gateway.py --serial rfc2217://localhost:4000 --api http://localhost:8081 --video amostras/person-bicycle-car-detection.mp4 --snapshot ../evidencias/snapshot_borrado.jpg
 ```
 Uma linha JSON por segundo: `nivelCm` acompanha o sensor, `carros`/`pedestres` aparecem em ~5 s.
 
@@ -55,7 +55,7 @@ curl localhost:8081/leituras                                         # leituras 
 python ui.py          # dentro de gateway/ -> http://localhost:8000
 python ui.py 8000 0.0.0.0   # acessivel por outro PC da rede (ex.: Tailscale)
 ```
-Cole o link (YouTube, HLS ou `amostras/cruzamento.mp4`) e clique em **Iniciar**: aparece o vídeo com as detecções (pessoas borradas), a contagem e os tempos de verde/travessia. Nada é gravado em disco.
+Cole o link (YouTube, HLS ou `amostras/person-bicycle-car-detection.mp4`) e clique em **Iniciar**: aparece o vídeo com as detecções (pessoas borradas), a contagem e os tempos de verde/travessia. Nada é gravado em disco.
 
 ## 5. Testes automáticos
 ```bash

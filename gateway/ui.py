@@ -14,7 +14,7 @@ S = {"contador": None, "status": "cole um link (YouTube / HLS / mp4) e clique em
 PAGE = """<!doctype html><meta charset=utf-8><title>SinalizaAI - visao</title>
 <body style="font-family:sans-serif;background:#111;color:#eee;margin:20px">
 <h2>SinalizaAI - contagem na borda</h2>
-<input id=u size=70 value="amostras/cruzamento.mp4"> <button onclick=go()>Iniciar</button>
+<input id=u size=70 value="amostras/person-bicycle-car-detection.mp4"> <button onclick=go()>Iniciar</button>
 <pre id=s style="font-size:18px"></pre><img src=/stream style="max-width:100%">
 <p style="color:#888">Pessoas aparecem borradas; nenhum frame e gravado.</p>
 <script>
