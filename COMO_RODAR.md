@@ -53,6 +53,7 @@ curl localhost:8081/leituras                                         # leituras 
 ## Web UI da câmera (opcional, para a demo)
 ```bash
 python ui.py          # dentro de gateway/ -> http://localhost:8000
+python ui.py 8000 0.0.0.0   # acessivel por outro PC da rede (ex.: Tailscale)
 ```
 Cole o link (YouTube, HLS ou `amostras/cruzamento.mp4`) e clique em **Iniciar**: aparece o vídeo com as detecções (pessoas borradas), a contagem e os tempos de verde/travessia. Nada é gravado em disco.
 

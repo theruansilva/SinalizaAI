@@ -1,6 +1,6 @@
 """Web UI da demo: cola o link, ve o video com as deteccoes (pessoas borradas) e os tempos decididos.
 
-uso: python ui.py [porta]  ->  http://localhost:8000
+uso: python ui.py [porta] [host]  ->  http://localhost:8000   (host 0.0.0.0 ou IP do Tailscale para acessar de outro PC)
 """
 import json, sys, threading, time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -92,5 +92,6 @@ class H(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     porta = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
-    print(f"http://localhost:{porta}")
-    ThreadingHTTPServer(("127.0.0.1", porta), H).serve_forever()
+    host = sys.argv[2] if len(sys.argv) > 2 else "127.0.0.1"
+    print(f"http://{host}:{porta}")
+    ThreadingHTTPServer((host, porta), H).serve_forever()
