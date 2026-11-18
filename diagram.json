@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "author": "GS CitizenTech",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-arduino-uno",
+      "id": "uno",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "sonar",
+      "top": -180,
+      "left": -40,
+      "attrs": {
+        "distance": "190"
+      }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz",
+      "top": -160,
+      "left": 200,
+      "attrs": {
+        "volume": "0.1"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "lcv",
+      "top": -150,
+      "left": 340,
+      "attrs": {
+        "color": "red",
+        "label": "Carro vermelho"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "lca",
+      "top": -150,
+      "left": 385,
+      "attrs": {
+        "color": "yellow",
+        "label": "Carro amarelo"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "lcg",
+      "top": -150,
+      "left": 430,
+      "attrs": {
+        "color": "green",
+        "label": "Carro verde"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "lpv",
+      "top": -150,
+      "left": 475,
+      "attrs": {
+        "color": "red",
+        "label": "Pedestre vermelho"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "lpg",
+      "top": -150,
+      "left": 520,
+      "attrs": {
+        "color": "green",
+        "label": "Pedestre verde"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "uno:5V",
+      "sonar:VCC",
+      "red",
+      []
+    ],
+    [
+      "uno:GND.1",
+      "sonar:GND",
+      "black",
+      []
+    ],
+    [
+      "uno:9",
+      "sonar:TRIG",
+      "orange",
+      []
+    ],
+    [
+      "uno:10",
+      "sonar:ECHO",
+      "purple",
+      []
+    ],
+    [
+      "uno:8",
+      "bz:2",
+      "blue",
+      []
+    ],
+    [
+      "uno:GND.1",
+      "bz:1",
+      "black",
+      []
+    ],
+    [
+      "uno:2",
+      "lcv:A",
+      "red",
+      []
+    ],
+    [
+      "lcv:C",
+      "uno:GND.2",
+      "black",
+      []
+    ],
+    [
+      "uno:3",
+      "lca:A",
+      "gold",
+      []
+    ],
+    [
+      "lca:C",
+      "uno:GND.2",
+      "black",
+      []
+    ],
+    [
+      "uno:4",
+      "lcg:A",
+      "green",
+      []
+    ],
+    [
+      "lcg:C",
+      "uno:GND.2",
+      "black",
+      []
+    ],
+    [
+      "uno:5",
+      "lpv:A",
+      "red",
+      []
+    ],
+    [
+      "lpv:C",
+      "uno:GND.2",
+      "black",
+      []
+    ],
+    [
+      "uno:6",
+      "lpg:A",
+      "green",
+      []
+    ],
+    [
+      "lpg:C",
+      "uno:GND.2",
+      "black",
+      []
+    ]
+  ]
+}
