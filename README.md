@@ -137,6 +137,8 @@ Para mostrar a visão ao vivo: `python ui.py` em `gateway/` e abrir http://local
 
 **Vídeo da demonstração:** [`evidencias/video-mostrando-funcionando.mp4`](evidencias/video-mostrando-funcionando.mp4) mostra o circuito no Wokwi e a web UI com a contagem, as pessoas borradas e os tempos calculados. O circuito também está em [`diagram.json`](diagram.json) (abre no Wokwi).
 
+![Circuito no Wokwi](evidencias/circuito.png)
+
 `cd gateway && python -m unittest -v` roda 7 testes:
 
 | Caso | Esperado | Resultado |
