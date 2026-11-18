@@ -7,7 +7,7 @@
 - Python 3.10+
 
 ## 1. Compilar o firmware (gera a pasta `build/`)
-**arduino-cli** (na pasta `gs-semaforo`):
+**arduino-cli** (na pasta `SinalizaAI`):
 ```bash
 arduino-cli core install arduino:avr
 arduino-cli compile --fqbn arduino:avr:uno --output-dir build sketch
@@ -15,7 +15,7 @@ arduino-cli compile --fqbn arduino:avr:uno --output-dir build sketch
 **Arduino IDE:** abra `sketch/sketch.ino`, placa *Arduino Uno*, menu *Sketch → Export Compiled Binary*, e copie `sketch.ino.hex` e `sketch.ino.elf` para uma pasta `build/` aqui na raiz.
 
 ## 2. Abrir o simulador
-1. Abra a pasta **`gs-semaforo`** (onde está o `wokwi.toml`) no VS Code.
+1. Abra a pasta **`SinalizaAI`** (onde está o `wokwi.toml`) no VS Code.
 2. `F1` → **Wokwi: Start Simulator**. **Deixe a aba do simulador visível** (escondida = pausa).
 3. Sem gateway, o semáforo já roda o ciclo fixo. Clique no HC-SR04 e coloque a distância abaixo de 170 cm: amarelo pisca e o buzzer toca (enchente).
 
@@ -66,7 +66,7 @@ python -m unittest -v      # dentro de gateway/; esperado: 7 testes OK
 ## Problemas comuns
 | Erro | Causa |
 |---|---|
-| `Connection refused` na porta 4000 | Simulador não está rodando, aba escondida, ou a pasta aberta não é `gs-semaforo` |
+| `Connection refused` na porta 4000 | Simulador não está rodando, aba escondida, ou a pasta aberta não é `SinalizaAI` |
 | Porta 8081 ocupada | Use outra: `api_fake.py 8090` e `--api http://localhost:8090` |
 | Wokwi pede firmware | Faltou o passo 1 (pasta `build/`) |
 | Primeira execução lenta | O YOLO baixa `yolo11n.pt` (~5 MB) sozinho |
